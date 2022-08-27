@@ -118,20 +118,20 @@
         tools:text="@sample/posts.json/data/shareCount" />
 
     <TextView
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/viewCount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewCount"
-        tools:text="@sample/posts.json/data/viewCount"/>
-
-    <ImageView
         android:id="@+id/viewCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        tools:text="@sample/posts.json/data/viewCount"/>
+
+    <ImageView
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/viewCount"
         app:layout_constraintTop_toTopOf="@+id/like"
         app:srcCompat="@drawable/ic_baseline_remove_red_eye_24" />
 
