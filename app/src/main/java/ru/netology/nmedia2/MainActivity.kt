@@ -1,14 +1,11 @@
 package ru.netology.nmedia2
 
-import android.icu.math.BigDecimal
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import ru.netology.nmedia2.databinding.ActivityMainBinding
-import java.math.MathContext
-import java.math.RoundingMode
 
 // path to sample data : https://github.com/netology-code/and2-code/tree/master/03_constraintlayout/app/sampledata
 
@@ -20,27 +17,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
-        viewModel.data.observe(this) { post ->
 
-            with(binding) {
-                author.text = post.author
-                published.text = post.published
-                content.text = post.content
-                likeCount.text = convertNum(post.likeCount)
-                shareCount.text = convertNum(post.shareCount)
-                viewCount.text = convertNum(post.viewCount)
-                like.setImageResource(if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_baseline_favorite_border_24)
-            }
-        }
+        // несколько лямбд подряд - рекомендация именовать и использовать именованные аргументы
+        val adapter = PostAdapter (
+            onLikeListener =  {viewModel.likeById(it.id)},
+            onShareListener = {viewModel.shareById(it.id)}
+        )
 
-        // работа с лайками
-        binding.like.setOnClickListener {
-            viewModel.like()
-        }
+        binding.lists.adapter = adapter
 
-        // работа с share
-        binding.share.setOnClickListener {
-            viewModel.share()
+        viewModel.data.observe(this) { posts ->
+           adapter.submitList(posts)
         }
 
         // для Задачи "Parent Child"
@@ -49,20 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun convertNum(num: Int): String {
-        val result = when(num) {
-            in 1..999 -> num.toString()
-            in 1_000..1_099 -> { val bd = BigDecimal(num / 1_000)
-                                bd.setScale(0, BigDecimal.ROUND_DOWN).toString() +"K"} // ~1K
-            in 1_100..999_999 -> { val bd = BigDecimal(num / 1_000)
-                                bd.setScale(1, BigDecimal.ROUND_DOWN).toString() +"K"} // ~1.1K
-            else -> { val bd = BigDecimal(num / 1_000_000)
-                    bd.setScale(1, BigDecimal.ROUND_DOWN).toString() + "M"}
-        }
 
-        return result
-    }
 }
 
 
