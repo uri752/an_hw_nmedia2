@@ -21,7 +21,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Знаний хватит на всех. На следующей неделе разбираемся с RecyclerView → http://netolo.gy/fya",
             published = "18 августа в 21:17",
             likedByMe = false,
-            likeCount = 999,
+            likeCount = 1155,
             shareCount = 100,
             viewCount = 1155
         ),

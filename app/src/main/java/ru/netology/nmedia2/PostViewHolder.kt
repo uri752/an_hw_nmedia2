@@ -40,11 +40,11 @@ class PostViewHolder(
     private fun convertNum(num: Int): String {
         val result = when(num) {
             in 1..999 -> num.toString()
-            in 1_000..1_099 -> { val bd = BigDecimal(num / 1_000)
+            in 1_000..1_099 -> { val bd = BigDecimal(num.toDouble() / 1_000)
                 bd.setScale(0, BigDecimal.ROUND_DOWN).toString() +"K"} // ~1K
-            in 1_100..999_999 -> { val bd = BigDecimal(num / 1_000)
+            in 1_100..999_999 -> { val bd = BigDecimal(num.toDouble() / 1_000)
                 bd.setScale(1, BigDecimal.ROUND_DOWN).toString() +"K"} // ~1.1K
-            else -> { val bd = BigDecimal(num / 1_000_000)
+            else -> { val bd = BigDecimal(num.toDouble() / 1_000_000)
                 bd.setScale(1, BigDecimal.ROUND_DOWN).toString() + "M"}
         }
 
