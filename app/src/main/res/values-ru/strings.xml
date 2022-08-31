@@ -4,4 +4,7 @@
     <string name="app_text">НМедия!</string>
     <string name="description_post_author_avatar">Пост автор аватар</string>
     <string name="description_post_menu">Пост меню</string>
+    <string name="remove">Удалить</string>
+    <string name="post_hint">Контент</string>
+    <string name="edit">Редактировать</string>
 </resources>

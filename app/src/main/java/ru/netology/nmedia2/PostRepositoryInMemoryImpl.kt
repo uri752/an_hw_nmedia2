@@ -78,4 +78,34 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+
+        // альтернатива
+        //posts = posts.filterNot { it.id = id } - формируем новый список из старого, убрав элемент с указанным id
+
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        // если id = 0, то будет создание, иначе редактирование
+        if (post.id == 0L) {
+            val newId = (posts.firstOrNull()?.id ?: 0L) + 1
+            posts = listOf(post.copy(id = newId, author = "Me", published = "now", likedByMe = false)) + posts
+            data.value = posts
+            return
+        }
+
+        posts = posts.map {
+            if (it.id == post.id) {
+                it.copy(content = post.content)
+            } else {
+                it
+            }
+        }
+        data.value = posts
+
+    }
+
+
 }

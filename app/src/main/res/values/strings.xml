@@ -3,4 +3,8 @@
     <string name="app_text">NMedia!</string>
     <string name="description_post_author_avatar">Post author avatar</string>
     <string name="description_post_menu">Post menu</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
+    <string name="post_hint">Content</string>
+    <string name="empty_post_error">Empty content not allowed</string>
 </resources>
