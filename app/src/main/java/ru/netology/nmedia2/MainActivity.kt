@@ -63,6 +63,10 @@ class MainActivity : AppCompatActivity() {
             binding.buttonCancelEdit.visibility = View.GONE;
 
             with(binding.content) {
+
+                // доработка - для исправления проблемы, возникающей при добавлении поста после отмены редактирования
+                viewModel.cancelEdit()
+
                 setText("")
                 clearFocus()
                 AndroidUtils.hideKeyboard(this)

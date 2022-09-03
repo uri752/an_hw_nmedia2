@@ -39,6 +39,11 @@ class PostViewModel : ViewModel() {
         edited.value = post
     }
 
+    // доработка - для исправления проблемы, возникающей при добавлении поста после отмены редактирования
+    fun cancelEdit() {
+        edited.value = empty
+    }
+
     fun changeContent(content: String) {
         if (content == edited.value?.content) {
             return
