@@ -19,10 +19,12 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            likeCount.text = convertNum(post.likeCount)
-            shareCount.text = convertNum(post.shareCount)
-            viewCount.text = convertNum(post.viewCount)
-            like.setImageResource(if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_baseline_favorite_border_24)
+            like.text = convertNum(post.likeCount)
+            share.text = convertNum(post.shareCount)
+            view.text = convertNum(post.viewCount)
+
+            //like.setImageResource(if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_outlined_24dp)
+            like.isChecked = post.likedByMe
 
             // работа с лайками
             like.setOnClickListener {
