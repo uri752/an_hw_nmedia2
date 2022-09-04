@@ -61,6 +61,30 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="avatar,published,menu" />
 
+    <ImageView
+        android:id = "@+id/video_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        android:src="@drawable/youtube_picture"
+        android:paddingTop="8dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/play_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:srcCompat="@drawable/ic_play_24dp"
+
+        app:layout_constraintEnd_toEndOf="@id/video_content"
+        app:layout_constraintBottom_toBottomOf="@id/video_content"
+        app:layout_constraintTop_toTopOf="@id/video_content"
+        app:layout_constraintStart_toStartOf="@id/video_content"
+
+        android:layout_margin="16dp"
+        android:contentDescription="@string/play_video"/>
+
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -71,7 +95,7 @@
         android:contentDescription="@string/description_post_author_avatar"
         app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintTop_toBottomOf="@id/video_content"
         tools:text="@sample/posts.json/data/content" />
 
     <androidx.constraintlayout.widget.Barrier

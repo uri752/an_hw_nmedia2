@@ -2,6 +2,7 @@ package ru.netology.nmedia2
 
 import android.icu.math.BigDecimal
 import android.os.Build
+import android.view.View
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,14 @@ class PostViewHolder(
             share.text = convertNum(post.shareCount)
             view.text = convertNum(post.viewCount)
 
+            if (post.video == null) {
+                videoContent.visibility = View.GONE
+                playButton.visibility = View.GONE
+            } else {
+                videoContent.visibility = View.VISIBLE
+                playButton.visibility = View.VISIBLE
+            }
+
             //like.setImageResource(if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_outlined_24dp)
             like.isChecked = post.likedByMe
 
@@ -34,6 +43,14 @@ class PostViewHolder(
             // работа с share
             share.setOnClickListener {
                 listener.share(post)
+            }
+
+            playButton.setOnClickListener {
+                listener.playVideo(post)
+            }
+
+            videoContent.setOnClickListener {
+                listener.playVideo(post)
             }
 
             menu.setOnClickListener {

@@ -11,7 +11,8 @@ private val empty = Post(
     likedByMe = false,
     likeCount = 0,
     shareCount = 0,
-    viewCount = 0
+    viewCount = 0,
+    video = null
 )
 
 class PostViewModel : ViewModel() {
@@ -28,13 +29,6 @@ class PostViewModel : ViewModel() {
         repository.removeById(id)
     }
 
-    fun save() {
-        edited.value?.let {
-            repository.save(it)
-            edited.value = empty
-        }
-    }
-
     fun edit(post: Post) {
         edited.value = post
     }
@@ -44,10 +38,13 @@ class PostViewModel : ViewModel() {
         edited.value = empty
     }
 
-    fun changeContent(content: String) {
+    fun changeContentAndSave(content: String) {
         if (content == edited.value?.content) {
             return
         }
-        edited.value = edited.value?.copy(content = content)
+        edited.value?.let {
+            repository.save(it.copy(content = content))
+        }
+        edited.value = empty
     }
 }

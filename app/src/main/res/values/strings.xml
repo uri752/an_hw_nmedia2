@@ -7,4 +7,7 @@
     <string name="edit">Edit</string>
     <string name="post_hint">Content</string>
     <string name="empty_post_error">Empty content not allowed</string>
+    <string name="chooser_share_post">Share post</string>
+    <string name="add_post">Add post</string>
+    <string name="play_video">Play video</string>
 </resources>

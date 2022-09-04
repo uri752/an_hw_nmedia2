@@ -1,10 +1,13 @@
 package ru.netology.nmedia2
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import ru.netology.nmedia2.databinding.ActivityMainBinding
@@ -23,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         // несколько лямбд подряд - рекомендация именовать и использовать именованные аргументы
         val adapter = PostAdapter(object : OnInteractionListener {
             override fun edit(post: Post) {
-                binding.buttonCancelEdit.visibility = View.VISIBLE
                 viewModel.edit(post)
             }
 
@@ -33,10 +35,24 @@ class MainActivity : AppCompatActivity() {
 
             override fun share(post: Post) {
                 viewModel.shareById(post.id)
+
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                startActivity(shareIntent)
             }
 
             override fun remove(post: Post) {
                 viewModel.removeById(post.id)
+            }
+
+            override fun playVideo(post: Post) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
+                startActivity(intent)
             }
 
         })
@@ -47,50 +63,22 @@ class MainActivity : AppCompatActivity() {
            adapter.submitList(posts)
         }
 
+        // зарегистрируем контракт
+        val activityLauncher = registerForActivityResult(NewPostActivity.Contract) { text ->
+            text ?: return@registerForActivityResult
+            viewModel.changeContentAndSave(text)
+        }
+
         viewModel.edited.observe(this) {
             if (it.id == 0L) {
                 return@observe
             }
 
-            with(binding.content) {
-                setText(it.content)
-                requestFocus()
-            }
+            activityLauncher.launch(it.content)
         }
 
-        binding.buttonCancelEdit.setOnClickListener {
-
-            binding.buttonCancelEdit.visibility = View.GONE;
-
-            with(binding.content) {
-
-                // доработка - для исправления проблемы, возникающей при добавлении поста после отмены редактирования
-                viewModel.cancelEdit()
-
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
-        }
-
-        binding.buttonSend.setOnClickListener {
-
-            binding.buttonCancelEdit.visibility = View.GONE;
-
-            with(binding.content) {
-                val text = text?.toString()
-                if (text.isNullOrBlank()) {
-                    Toast.makeText(context, R.string.empty_post_error, Toast.LENGTH_LONG)
-                    return@setOnClickListener
-                }
-
-                viewModel.changeContent(text)
-                viewModel.save()
-
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
+        binding.add.setOnClickListener {
+            activityLauncher.launch(null)
         }
 
         // для Задачи "Parent Child"
