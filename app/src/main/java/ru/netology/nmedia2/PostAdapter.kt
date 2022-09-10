@@ -8,20 +8,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.netology.nmedia2.databinding.CardPostBinding
 
-typealias LikeListener = (Post) -> Unit
-typealias ShareListener = (Post) -> Unit
+interface OnInteractionListener {
+    fun edit(post: Post)
+    fun like(post: Post)
+    fun share(post: Post)
+    fun remove(post: Post)
+    fun playVideo(post: Post)
+}
 
 class PostAdapter(
-    private val onLikeListener: LikeListener,
-    private val onShareListener: ShareListener
+    private val listener: OnInteractionListener
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
 
     // создает новые элементы для RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
         PostViewHolder(
             CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            onLikeListener = onLikeListener,
-            onShareListener = onShareListener
+            listener
         )
 
 

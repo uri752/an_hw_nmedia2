@@ -6,6 +6,17 @@ import androidx.lifecycle.MutableLiveData
 class PostRepositoryInMemoryImpl : PostRepository {
     private var posts = listOf(
         Post(
+            id = 4,
+            author = "Нетология. Университет интернет-профессий будущего",
+            content = "How To Become a Full Stack Developer In 2020. Gaining a depth of understanding in the fundamentals like HTML, CSS before moving to other, shinier, technologies is really good advice. I've found that this has been the most challenging part about doing independent learning. Thank you for making this video.",
+            published = "19 сентября в 10:24",
+            likedByMe = false,
+            likeCount = 20,
+            shareCount = 253,
+            viewCount = 756,
+            video = "https://www.youtube.com/watch?v=uD27CZEiuGk"
+        ),
+        Post(
             id = 3,
             author = "Нетология. Университет интернет-профессий будущего",
             content = "Языков программирования много, и выбрать какой-то один бывает нелегко. Собрали подборку статей, которая поможет вам начать, если вы остановили свой выбор на JavaScript.",
@@ -13,7 +24,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likedByMe = false,
             likeCount = 20,
             shareCount = 253,
-            viewCount = 756
+            viewCount = 756,
+            video = null
         ),
         Post(
             id = 2,
@@ -23,7 +35,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likedByMe = false,
             likeCount = 1155,
             shareCount = 100,
-            viewCount = 1155
+            viewCount = 1155,
+            video = "https://www.youtube.com/watch?v=uD27CZEiuGk"
         ),
         Post(
             id = 1,
@@ -33,7 +46,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likedByMe = false,
             likeCount = 999,
             shareCount = 10,
-            viewCount = 5
+            viewCount = 5,
+            video = null
         )
     )
 
@@ -77,5 +91,35 @@ class PostRepositoryInMemoryImpl : PostRepository {
         }
         data.value = posts
     }
+
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+
+        // альтернатива
+        //posts = posts.filterNot { it.id = id } - формируем новый список из старого, убрав элемент с указанным id
+
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        // если id = 0, то будет создание, иначе редактирование
+        if (post.id == 0L) {
+            val newId = (posts.firstOrNull()?.id ?: 0L) + 1
+            posts = listOf(post.copy(id = newId, author = "Me", published = "now", likedByMe = false)) + posts
+            data.value = posts
+            return
+        }
+
+        posts = posts.map {
+            if (it.id == post.id) {
+                it.copy(content = post.content)
+            } else {
+                it
+            }
+        }
+        data.value = posts
+
+    }
+
 
 }

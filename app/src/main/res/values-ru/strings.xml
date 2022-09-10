@@ -4,4 +4,11 @@
     <string name="app_text">НМедия!</string>
     <string name="description_post_author_avatar">Пост автор аватар</string>
     <string name="description_post_menu">Пост меню</string>
+    <string name="remove">Удалить</string>
+    <string name="post_hint">Текст поста</string>
+    <string name="edit">Редактировать</string>
+    <string name="empty_post_error">Контент не может быть пустым</string>
+    <string name="chooser_share_post">Поделиться постом</string>
+    <string name="add_post">Добавить пост</string>
+    <string name="play_video">Воспроизвести видео</string>
 </resources>
