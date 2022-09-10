@@ -58,4 +58,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.5.2'
     implementation 'androidx.activity:activity-ktx:1.5.1'
 
+    // для GSON - JSON
+    implementation 'com.google.code.gson:gson:2.8.9'
+
 }
