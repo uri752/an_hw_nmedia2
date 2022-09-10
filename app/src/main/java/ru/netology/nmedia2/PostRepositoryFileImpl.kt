@@ -8,9 +8,7 @@ import com.google.gson.reflect.TypeToken
 
 class PostRepositoryFileImpl(private val context: Context) : PostRepository {
     private val gson = Gson()
-    private val prefs = context.getSharedPreferences("repo", Context.MODE_PRIVATE)
     private val type = TypeToken.getParameterized(List::class.java, Post::class.java).type
-    private val key = "posts"
     private val filename = "posts.json"
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
@@ -87,6 +85,7 @@ class PostRepositoryFileImpl(private val context: Context) : PostRepository {
             val newId = (posts.firstOrNull()?.id ?: 0L) + 1
             posts = listOf(post.copy(id = newId, author = "Me", published = "now", likedByMe = false)) + posts
             data.value = posts
+            sync()
             return
         }
 
