@@ -2,29 +2,35 @@ package ru.netology.nmedia2
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import androidx.activity.result.launch
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import ru.netology.nmedia2.databinding.ActivityMainBinding
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia2.NewPostFragment.Companion.textArg
+import ru.netology.nmedia2.databinding.FragmentFeedBinding
 
 // path to sample data : https://github.com/netology-code/and2-code/tree/master/03_constraintlayout/app/sampledata
 
-class MainActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+class FeedFragment : Fragment() {
 
-        val viewModel: PostViewModel by viewModels()
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         // несколько лямбд подряд - рекомендация именовать и использовать именованные аргументы
         val adapter = PostAdapter(object : OnInteractionListener {
+
             override fun edit(post: Post) {
                 viewModel.edit(post)
             }
@@ -55,38 +61,34 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-        })
+        },
+            findNavController()
+        )
 
         binding.lists.adapter = adapter
 
-        viewModel.data.observe(this) { posts ->
-           adapter.submitList(posts)
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
+            adapter.submitList(posts)
         }
 
-        // зарегистрируем контракт
-        val activityLauncher = registerForActivityResult(NewPostActivity.Contract) { text ->
-            text ?: return@registerForActivityResult
-            viewModel.changeContentAndSave(text)
-        }
-
-        viewModel.edited.observe(this) {
-            if (it.id == 0L) {
+        viewModel.edited.observe(viewLifecycleOwner) { post ->
+            if (post.id == 0L) {
                 return@observe
             }
 
-            activityLauncher.launch(it.content)
+            findNavController().navigate(
+                R.id.action_feedFragment_to_newPostFragment,
+                Bundle().apply {
+                    textArg = post.content
+                })
         }
 
         binding.add.setOnClickListener {
-            activityLauncher.launch(null)
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
-        // для Задачи "Parent Child"
-//        binding.root.setOnClickListener { Log.d("MyLog","root")}
-//        binding.avatar.setOnClickListener { Log.d("MyLog", "avatar") }
-
+        return binding.root
     }
-
 
 }
 

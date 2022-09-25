@@ -1,9 +1,12 @@
 package ru.netology.nmedia2
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.netology.nmedia2.databinding.CardPostBinding
@@ -17,14 +20,16 @@ interface OnInteractionListener {
 }
 
 class PostAdapter(
-    private val listener: OnInteractionListener
+    private val listener: OnInteractionListener,
+    private val navController: NavController
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
 
     // создает новые элементы для RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
         PostViewHolder(
             CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            listener
+            listener,
+            navController
         )
 
 

@@ -15,7 +15,7 @@
         tools:listitem="@layout/card_post"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        tools:context=".MainActivity"/>
+        tools:context=".FeedFragment"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"

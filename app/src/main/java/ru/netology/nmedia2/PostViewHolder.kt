@@ -2,15 +2,19 @@ package ru.netology.nmedia2
 
 import android.icu.math.BigDecimal
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nmedia2.CurPostFragment.Companion.postArg
 import ru.netology.nmedia2.databinding.CardPostBinding
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val listener: OnInteractionListener
+    private val listener: OnInteractionListener,
+    private val navController: NavController,
     ) : RecyclerView.ViewHolder(binding.root) {
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -71,6 +75,18 @@ class PostViewHolder(
                     }
                     show()
                 }
+            }
+
+
+            content.setOnClickListener {
+               //Log.d("MyLog","setOnClickListener")
+               //findNavController().navigate(R.id.action_feedFragment_to_curPostFragment)
+
+                navController.navigate(
+                   R.id.action_feedFragment_to_curPostFragment,
+                   Bundle().apply {
+                       postArg = post
+                   })
             }
         }
     }
