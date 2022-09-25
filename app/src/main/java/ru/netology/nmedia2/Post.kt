@@ -1,7 +1,5 @@
 package ru.netology.nmedia2
 
-import java.io.Serializable
-
 data class Post(
     val id: Long,
     val author: String,
@@ -12,4 +10,4 @@ data class Post(
     val shareCount: Int,
     val viewCount: Int,
     val video: String?
-): Serializable
+)

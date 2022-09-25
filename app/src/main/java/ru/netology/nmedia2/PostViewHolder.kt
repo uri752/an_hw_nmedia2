@@ -8,7 +8,7 @@ import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.nmedia2.CurPostFragment.Companion.postArg
+import ru.netology.nmedia2.CurPostFragment.Companion.idArg
 import ru.netology.nmedia2.databinding.CardPostBinding
 
 class PostViewHolder(
@@ -85,7 +85,7 @@ class PostViewHolder(
                 navController.navigate(
                    R.id.action_feedFragment_to_curPostFragment,
                    Bundle().apply {
-                       postArg = post
+                       idArg = post.id
                    })
             }
         }
