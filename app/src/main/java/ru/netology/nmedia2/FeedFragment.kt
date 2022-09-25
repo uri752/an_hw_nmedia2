@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia2.*
 import ru.netology.nmedia2.NewPostFragment.Companion.textArg
 import ru.netology.nmedia2.databinding.FragmentFeedBinding
 

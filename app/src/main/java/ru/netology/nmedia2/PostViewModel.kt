@@ -21,8 +21,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     //упрощенный вариант
     //private val repository: PostRepository = PostRepositoryInMemoryImpl()
-    private val repository: PostRepository = PostRepositoryFileImpl(application)
-    val data = repository.get()
+    //private val repository: PostRepository = PostRepositoryFileImpl(application)
+    private val repository: PostRepository = PostRepositorySQLiteImpl(
+        AppDb.getInstance(application).postDao
+    )
+    val data = repository.getAll()
 
     val edited = MutableLiveData(empty)
 
@@ -43,11 +46,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun changeContentAndSave(content: String) {
-        if (content == edited.value?.content) {
+        val text = content.trim()
+        if (edited.value?.content == text) {
             return
         }
+
+        edited.value = edited.value?.copy(content = text)
+
         edited.value?.let {
-            repository.save(it.copy(content = content))
+            repository.save(it)
         }
         edited.value = empty
     }
