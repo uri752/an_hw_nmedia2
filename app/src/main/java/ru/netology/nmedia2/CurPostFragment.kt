@@ -29,16 +29,16 @@ class CurPostFragment : Fragment() {
         val binding = FragmentCurPostBinding.inflate(inflater, container, false)
 
         val postId = arguments?.idArg ?: -1
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val post = posts.find { it.id == postId } ?: return@observe
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            val post = state.posts.find { it.id == postId } ?: return@observe
 
             with(binding) {
                 author.text = post.author
                 content.text = post.content
                 published.text = post.published
-                like.text = post.likeCount.toString()
-                share.text = post.shareCount.toString()
-                view.text = post.viewCount.toString()
+                like.text = post.likes.toString()
+                share.text = post.shares.toString()
+                view.text = post.views.toString()
 
                 if (post.video == null) {
                     videoContent.visibility = View.GONE

@@ -3,7 +3,11 @@ package ru.netology.nmedia2
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.navigation.findNavController
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia2.NewPostFragment.Companion.textArg
 
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
@@ -29,6 +33,27 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             )
         }
 
-
+        checkGoogleApiAvailability()
     }
+
+    private fun checkGoogleApiAvailability() {
+        with(GoogleApiAvailability.getInstance()) {
+            val code = isGooglePlayServicesAvailable( this@AppActivity)
+            if (code == ConnectionResult.SUCCESS) {
+                return@with
+            }
+
+            if (isUserResolvableError(code)) {
+                getErrorDialog(this@AppActivity, code, 9000)?.show()
+                return
+            }
+
+            Toast.makeText(this@AppActivity, "Google Api Unavailable", Toast.LENGTH_LONG)
+        }
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            println(it)
+        }
+    }
+
 }
