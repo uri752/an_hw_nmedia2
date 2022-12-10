@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
+
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -9,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId "ru.netology.nmedia2"
-        minSdk 23
-        targetSdk 33
+        minSdk 22
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
@@ -21,6 +23,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders.usesClearTextTraffic = false
+        }
+
+        // указать возможность применения не безопасного http-соединения для дебажной версии (для релизной будет https)
+        debug {
+            manifestPlaceholders.usesClearTextTraffic = true
         }
     }
     compileOptions {
@@ -70,4 +78,12 @@ dependencies {
     implementation "androidx.room:room-runtime:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
 
+    // для FCM - Firebase Cloud Messaging
+    implementation platform("com.google.firebase:firebase-bom:30.5.0")
+    implementation "com.google.firebase:firebase-messaging-ktx"
+    implementation "com.google.android.gms:play-services-base:18.1.0"
+
+    // для OkHttp - библиотека работы с http/https-запросами
+    def okhttp_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 }

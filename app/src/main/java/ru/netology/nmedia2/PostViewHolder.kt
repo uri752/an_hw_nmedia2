@@ -24,9 +24,9 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            like.text = convertNum(post.likeCount)
-            share.text = convertNum(post.shareCount)
-            view.text = convertNum(post.viewCount)
+            like.text = convertNum(post.likes)
+            share.text = convertNum(post.shares)
+            view.text = convertNum(post.views)
 
             if (post.video == null) {
                 videoContent.visibility = View.GONE
