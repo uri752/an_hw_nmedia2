@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 class PostRepositoryImpl : PostRepository {
 
     // создать константу BASE_URL
-    private companion object {
+    public companion object {
         const val BASE_URL = "http://10.0.2.2:9999/" // адрес для эмулятора
         // или локальный адрес компа для реального android-устройства (например http://192.168.1.53:9999/)
 

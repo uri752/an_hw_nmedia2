@@ -4,12 +4,16 @@ import android.icu.math.BigDecimal
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia2.CurPostFragment.Companion.idArg
 import ru.netology.nmedia2.databinding.CardPostBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 
 class PostViewHolder(
     private val binding: CardPostBinding,
@@ -89,6 +93,11 @@ class PostViewHolder(
                    })
             }
         }
+
+        // загрузка изображений-аватаров
+        val url = "${PostRepositoryImpl.BASE_URL}avatars/${post.authorAvatar}"
+        binding.avatar.loadCircleCrop(url)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -105,5 +114,18 @@ class PostViewHolder(
 
         return result
     }
+}
 
+fun ImageView.load(url: String, vararg transforms: BitmapTransformation = emptyArray()) {
+    Glide.with(this)
+        .load(url)
+        .error(R.drawable.ic_error_100dp)
+        .placeholder(R.drawable.ic_loading_100dp)
+        .timeout(10_000)
+        .transform(*transforms)
+        .into(this)
+}
+
+fun ImageView.loadCircleCrop(url: String, vararg transforms: BitmapTransformation = emptyArray()) {
+    load(url, CircleCrop(), *transforms)
 }
