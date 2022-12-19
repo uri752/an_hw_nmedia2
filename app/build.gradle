@@ -86,4 +86,14 @@ dependencies {
     // для OkHttp - библиотека работы с http/https-запросами
     def okhttp_version = "4.10.0"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+    // для image loader-ов (Glide, Picasso, Fresco)
+    //def glide_version = "4.12.0"
+    //def fresco_version = "4.10.0"
+    //def picasso_version = "2.71828"
+
+    //implementation "com.github.bumpbtech.glide:glide:$glide_version"
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    //implementation "com.facebook.fresco:fresco:$fresco_version"
+    //implementation "com.squareup.picasso:picasso:$picasso_version"
 }

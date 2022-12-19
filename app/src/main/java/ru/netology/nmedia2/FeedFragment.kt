@@ -78,7 +78,7 @@ class FeedFragment : Fragment() {
 
 
         binding.retry.setOnClickListener {
-            viewModel.load()
+            viewModel.loadPosts()
         }
 
         viewModel.edited.observe(viewLifecycleOwner) { post ->
