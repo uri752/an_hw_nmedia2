@@ -24,11 +24,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders.usesClearTextTraffic = false
+            buildConfigField "String", "BASE_URL",'"http://netomedia.ru"'
         }
 
         // указать возможность применения не безопасного http-соединения для дебажной версии (для релизной будет https)
         debug {
             manifestPlaceholders.usesClearTextTraffic = true
+            buildConfigField "String", "BASE_URL",'"http://10.0.2.2:9999"'
         }
     }
     compileOptions {
@@ -97,4 +99,10 @@ dependencies {
     //implementation "com.facebook.fresco:fresco:$fresco_version"
     //implementation "com.squareup.picasso:picasso:$picasso_version"
 
+    // для библиотеки Retrofit - позволяет в декларативном стиле работать с http-запросами
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    // для логирования
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
 }
