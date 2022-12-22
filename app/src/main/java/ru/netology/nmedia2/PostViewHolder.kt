@@ -14,6 +14,8 @@ import ru.netology.nmedia2.databinding.CardPostBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import ru.netology.nmedia2.BuildConfig.BASE_URL
+import ru.netology.nmedia2.api.PostsApi
 
 class PostViewHolder(
     private val binding: CardPostBinding,
@@ -95,8 +97,9 @@ class PostViewHolder(
         }
 
         // загрузка изображений-аватаров
-        val url = "${PostRepositoryImpl.BASE_URL}avatars/${post.authorAvatar}"
-        binding.avatar.loadCircleCrop(url)
+        //val url = "${PostRepositoryImpl.BASE_URL}avatars/${post.authorAvatar}"
+        val curUrl = "${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}"
+        binding.avatar.loadCircleCrop(curUrl)
 
     }
 
