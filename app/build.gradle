@@ -100,9 +100,25 @@ dependencies {
     //implementation "com.squareup.picasso:picasso:$picasso_version"
 
     // для библиотеки Retrofit - позволяет в декларативном стиле работать с http-запросами
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    // c 2.5.0 выдает ошибку "No Retrofit annotation found. (parameter #1) suspend function"
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     // для логирования
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
+    // для корутин
+    def coroutines_version = "1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    def room_version = "2.4.3"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // для swipe refresh layout
+    def swiperefreshlayout_version = "1.1.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
+
+    def coordinatorlayout_version = "1.2.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayout_version"
+
+
 }

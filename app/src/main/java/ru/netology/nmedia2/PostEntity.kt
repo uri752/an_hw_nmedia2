@@ -3,6 +3,8 @@ package ru.netology.nmedia2
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// все что касается базы - отдельная сущность
+
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
