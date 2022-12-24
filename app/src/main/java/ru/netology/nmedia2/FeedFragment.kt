@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia2.*
 import ru.netology.nmedia2.NewPostFragment.Companion.textArg
 import ru.netology.nmedia2.databinding.FragmentFeedBinding
@@ -71,11 +72,28 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
-            binding.errorGroup.isVisible = state.error
-            binding.progress.isVisible = state.loading
             binding.empty.isVisible = state.empty
         }
 
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state is FeedModelState.Loading
+            if (state is FeedModelState.Error) {
+                Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_SHORT )
+                    .setAction(R.string.retry) {
+                        viewModel.loadPosts()
+                    }
+                    .show()
+            }
+
+            // 2 - показ и скрытие анимации обновления
+            binding.refresh.isRefreshing = state is FeedModelState.Refreshing
+
+        }
+
+        // 1 - обработать событие свайпа
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
 
         binding.retry.setOnClickListener {
             viewModel.loadPosts()

@@ -24,7 +24,10 @@ abstract class AppDb: RoomDatabase() {
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(context, AppDb::class.java,"app.db")
             .fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
+
+            // перешли на подход многопоточности - корутины, работаем на фоновых потоках
+            //.allowMainThreadQueries()
+
             .build()
     }
 }
