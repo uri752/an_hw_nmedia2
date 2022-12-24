@@ -72,17 +72,21 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeById(id: Long) = viewModelScope.launch {
 
+        _dataState.value = FeedModelState.Refreshing
+
         var post = data.value?.posts?.find { it.id == id}
         val likedByMe = post?.likedByMe ?: false
         if (!likedByMe) {
             try {
                 repository.likeByIdAsync(id)
+                _dataState.value = FeedModelState.Idle
             } catch (e: Exception) {
                 _dataState.value = FeedModelState.Error
             }
         } else {
             try {
                 repository.dislikeByIdAsync(id)
+                _dataState.value = FeedModelState.Idle
             } catch (e: Exception) {
                 _dataState.value = FeedModelState.Error
                 e.printStackTrace()
@@ -91,8 +95,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun removeById(id: Long) = viewModelScope.launch {
+        _dataState.value = FeedModelState.Refreshing
         try {
             repository.removeByIdAsync(id)
+            _dataState.value = FeedModelState.Idle
         } catch (e: Exception) {
             _dataState.value = FeedModelState.Error
             e.printStackTrace()
@@ -109,6 +115,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun save() {
+        _dataState.value = FeedModelState.Refreshing
         edited.value?.let {
             _postCreated.value = Unit
             viewModelScope.launch {
