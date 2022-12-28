@@ -113,7 +113,8 @@ class FeedFragment : Fragment() {
         binding.newPosts.setOnClickListener {
             viewModel.updateShowForNewPosts()
             binding.newPosts.visibility = View.GONE
-            binding.lists.smoothScrollToPosition(0)
+            //binding.lists.smoothScrollToPosition(0) - не срабатывает плавный скролл RecyclerView к самому верху
+            binding.lists.scrollToPosition(0)
         }
 
         viewModel.edited.observe(viewLifecycleOwner) { post ->
