@@ -3,6 +3,8 @@ package ru.netology.nmedia2
 import android.app.Application
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
@@ -27,7 +29,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val edited = MutableLiveData(empty)
 
     val data: LiveData<FeedModel> = repository.data
-            .map(::FeedModel)
+        .map(::FeedModel)
+        .asLiveData(Dispatchers.Default)
+
+    val newerCount: LiveData<Int> = data.switchMap {
+        val newerId = it.posts.firstOrNull()?.id ?: 0L
+        println("PostViewModel-newerId: $newerId")
+        repository.getNewerCount(newerId)
+            .catch { e -> e.printStackTrace() }
+            .asLiveData()
+    }
 
     // все что связано со State-ом
     private val _dataState = MutableLiveData<FeedModelState>(null)
@@ -92,6 +103,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun updateShowForNewPosts() = viewModelScope.launch {
+        repository.updateShowForNewPosts()
     }
 
     fun removeById(id: Long) = viewModelScope.launch {

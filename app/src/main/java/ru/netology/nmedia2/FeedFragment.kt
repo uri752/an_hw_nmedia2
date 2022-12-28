@@ -75,6 +75,17 @@ class FeedFragment : Fragment() {
             binding.empty.isVisible = state.empty
         }
 
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            println("Newer count $it")
+            if (it > 0) {
+                binding.newPosts.visibility = View.VISIBLE
+                binding.newPosts.text = "Свежие записи ($it)"
+            } else {
+                binding.newPosts.visibility = View.GONE
+            }
+
+        }
+
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state is FeedModelState.Loading
             if (state is FeedModelState.Error) {
@@ -97,6 +108,12 @@ class FeedFragment : Fragment() {
 
         binding.retry.setOnClickListener {
             viewModel.loadPosts()
+        }
+
+        binding.newPosts.setOnClickListener {
+            viewModel.updateShowForNewPosts()
+            binding.newPosts.visibility = View.GONE
+            binding.lists.smoothScrollToPosition(0)
         }
 
         viewModel.edited.observe(viewLifecycleOwner) { post ->
