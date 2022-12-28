@@ -3,6 +3,8 @@ package ru.netology.nmedia2
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// все что касается базы - отдельная сущность
+
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
@@ -15,7 +17,9 @@ data class PostEntity(
     val likeCount: Int = 0,
     val shareCount: Int = 0,
     val viewCount: Int = 0,
-    val video: String?
+    val video: String?,
+    val show: Boolean = true,
+
 ) {
     fun toDto() = Post(id, author, authorAvatar, content, published, likedByMe, likeCount, shareCount, viewCount, video)
 
@@ -23,3 +27,7 @@ data class PostEntity(
         fun fromDto(dto: Post) = PostEntity(dto.id, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likedByMe, dto.likes, dto.shares, dto.views, dto.video)
     }
 }
+
+fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
+fun List<Post>.toEntity(show: Boolean = true): List<PostEntity> = map(PostEntity::fromDto)
+    .map { it.copy(show = show) }

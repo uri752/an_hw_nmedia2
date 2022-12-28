@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia2.*
 import ru.netology.nmedia2.NewPostFragment.Companion.textArg
 import ru.netology.nmedia2.databinding.FragmentFeedBinding
@@ -71,14 +72,49 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
-            binding.errorGroup.isVisible = state.error
-            binding.progress.isVisible = state.loading
             binding.empty.isVisible = state.empty
         }
 
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            println("Newer count $it")
+            if (it > 0) {
+                binding.newPosts.visibility = View.VISIBLE
+                binding.newPosts.text = "Свежие записи ($it)"
+            } else {
+                binding.newPosts.visibility = View.GONE
+            }
+
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state is FeedModelState.Loading
+            if (state is FeedModelState.Error) {
+                Snackbar.make(binding.root, R.string.error, Snackbar.LENGTH_SHORT )
+                    .setAction(R.string.retry) {
+                        viewModel.loadPosts()
+                    }
+                    .show()
+            }
+
+            // 2 - показ и скрытие анимации обновления
+            binding.refresh.isRefreshing = state is FeedModelState.Refreshing
+
+        }
+
+        // 1 - обработать событие свайпа
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
 
         binding.retry.setOnClickListener {
             viewModel.loadPosts()
+        }
+
+        binding.newPosts.setOnClickListener {
+            viewModel.updateShowForNewPosts()
+            binding.newPosts.visibility = View.GONE
+            //binding.lists.smoothScrollToPosition(0) - не срабатывает плавный скролл RecyclerView к самому верху
+            binding.lists.scrollToPosition(0)
         }
 
         viewModel.edited.observe(viewLifecycleOwner) { post ->
